@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocioShop Pro</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background-color: #0d0d0d; color: #00ff41; font-family: 'Courier New', monospace; margin: 0; padding: 20px; text-align: center; }
+        .product-card { border: 1px solid #00ff41; border-radius: 10px; padding: 15px; margin-bottom: 20px; background: #1a1a1a; box-shadow: 0 0 10px #00ff41; }
+        .btn-buy { background-color: #00ff41; color: #000; border: none; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; width: 100%; }
+        h1 { font-size: 1.5rem; text-shadow: 2px 2px #ff003c; }
+    </style>
+</head>
+<body>
+    <h1>⚡ KRONNO STCOK SHOP ⚡</h1>
+    <div id="catalog">
+        <div class="product-card">
+            <h3>Account PVA</h3>
+            <p>Disponibili: <span id="stock-count">Caricamento...</span></p>
+            <p>Prezzo: 2.00€ (LTC)</p>
+            <button class="btn-buy" onclick="buyProduct('pva')">ACQUISTA ORA</button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Espande l'app a tutto schermo
+
+        function buyProduct(id) {
+            // Invia il comando al bot Python
+            tg.sendData(JSON.stringify({action: "buy", product: id}));
+        }
+    </script>
+</body>
+</html>
