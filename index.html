@@ -1,29 +1,148 @@
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kronno Stock Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary: #00ff41; /* Verde Matrix/Neon */
+            --bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --text: #ffffff;
+        }
 
-    function buyProduct(id) {
-        const indirizzoLTC = "LXAnkccgxDBi8m3LtEXGuA8TnPynuceC2Q";
-        
-        // Usiamo il popup nativo che funziona SEMPRE
-        tg.showPopup({
-            title: 'Pagamento Account PVA',
-            message: 'Invia 2.00€ in LTC a questo indirizzo:\n\n' + indirizzoLTC,
-            buttons: [
-                {id: 'copy', type: 'default', text: 'Copia Indirizzo'},
-                {id: 'close', type: 'cancel', text: 'Chiudi'}
-            ]
-        }, function(buttonId) {
-            if (buttonId === 'copy') {
-                // Questo copia l'indirizzo negli appunti
-                const el = document.createElement('textarea');
-                el.value = indirizzoLTC;
-                document.body.appendChild(el);
-                el.select();
-                document.execCommand('copy');
-                document.body.removeChild(el);
-                tg.showAlert("Indirizzo copiato! Procedi pure con il pagamento.");
-            }
-        });
-    }
-</script>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        .product-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .price {
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .details {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .btn-buy {
+            background-color: var(--primary);
+            color: black;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⚡ KRONNO STOCK SHOP ⚡</h1>
+
+    <div class="container">
+        <div class="product-card">
+            <div class="product-icon">👤</div>
+            <h2>Account PVA</h2>
+            <p class="details">Account verificati con telefono (PVA)<br>Disponibili: Pronta consegna</p>
+            <div class="price">2.00€ (LTC)</div>
+            <button class="btn-buy" onclick="avviaPagamento()">ACQUISTA ORA</button>
+        </div>
+    </div>
+
+    <div class="footer">Pagamenti sicuri in Litecoin (LTC)</div>
+
+    <script>
+        // Inizializziamo la WebApp di Telegram
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Fa aprire la app a tutto schermo
+        tg.ready();
+
+        function avviaPagamento() {
+            const indirizzoLTC = "LXAnkccgxDBi8m3LtEXGuA8TnPynuceC2Q";
+
+            // Mostriamo il popup ufficiale di Telegram
+            tg.showPopup({
+                title: 'Pagamento LTC',
+                message: 'Per completare l\'acquisto invia 2.00€ in LTC a:\n\n' + indirizzoLTC + '\n\nCopia l\'indirizzo e invia la conferma al supporto.',
+                buttons: [
+                    {id: 'copy', type: 'default', text: 'Copia Indirizzo'},
+                    {id: 'close', type: 'cancel', text: 'Annulla'}
+                ]
+            }, function(buttonId) {
+                if (buttonId === 'copy') {
+                    // Funzione di copia negli appunti
+                    const input = document.createElement('textarea');
+                    input.value = indirizzoLTC;
+                    document.body.appendChild(input);
+                    input.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+                    
+                    // Alert nativo di Telegram
+                    tg.showAlert("Indirizzo copiato negli appunti! 🚀");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
