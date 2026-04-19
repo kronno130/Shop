@@ -14,7 +14,40 @@
 </head>
 <body>
     <h1>⚡ KRONNO STCOK SHOP ⚡</h1>
-    <div id="catalog">
+    <div id="catalog"> 
+        <script>
+        // Inizializza Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function avviaPagamento() {
+            const indirizzoLTC = "LXAnkccgxDBi8m3LtEXGuA8TnPynuceC2Q";
+            
+            tg.showPopup({
+                title: 'Pagamento LTC',
+                message: 'Invia 2.00€ in LTC a:\n\n' + indirizzoLTC,
+                buttons: [
+                    {id: 'copy', type: 'default', text: 'Copia Indirizzo'},
+                    {id: 'close', type: 'cancel', text: 'Chiudi'}
+                ]
+            }, function(buttonId) {
+                if (buttonId === 'copy') {
+                    const el = document.createElement('textarea');
+                    el.value = indirizzoLTC;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                    tg.showAlert("Indirizzo copiato! Procedi al pagamento.");
+                }
+            });
+        }
+
+        // Collega la funzione al tuo pulsante (riga 11 del tuo CSS)
+        document.querySelector('.btn-buy').addEventListener('click', avviaPagamento);
+    </script>
+</body>
+</html>
         <div class="product-card">
             <h3>Account PVA</h3>
             <p>Disponibili: <span id="stock-count">Caricamento...</span></p>
