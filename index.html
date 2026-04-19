@@ -59,14 +59,32 @@
         </div>
     </div>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand(); // Espande l'app a tutto schermo
+   <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-        function buyProduct(id) {
-            // Invia il comando al bot Python
-            tg.sendData(JSON.stringify({action: "buy", product: id}));
-        }
-    </script>
-</body>
-</html>
+    function buyProduct(id) {
+        const indirizzoLTC = "LXAnkccgxDBi8m3LtEXGuA8TnPynuceC2Q";
+        
+        // Usiamo il popup nativo che funziona SEMPRE
+        tg.showPopup({
+            title: 'Pagamento Account PVA',
+            message: 'Invia 2.00€ in LTC a questo indirizzo:\n\n' + indirizzoLTC,
+            buttons: [
+                {id: 'copy', type: 'default', text: 'Copia Indirizzo'},
+                {id: 'close', type: 'cancel', text: 'Chiudi'}
+            ]
+        }, function(buttonId) {
+            if (buttonId === 'copy') {
+                // Questo copia l'indirizzo negli appunti
+                const el = document.createElement('textarea');
+                el.value = indirizzoLTC;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                tg.showAlert("Indirizzo copiato! Procedi pure con il pagamento.");
+            }
+        });
+    }
+</script>
