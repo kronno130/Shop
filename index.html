@@ -15,36 +15,39 @@
 <body>
     <h1>⚡ KRONNO STCOK SHOP ⚡</h1>
     <div id="catalog"> 
-        <script>
-        // Inizializza Telegram WebApp
+       <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
+        tg.ready(); // Comunica a Telegram che la app è pronta
 
-        function avviaPagamento() {
-            const indirizzoLTC = "LXAnkccgxDBi8m3LtEXGuA8TnPynuceC2Q";
+        document.addEventListener('DOMContentLoaded', function() {
+            const bottone = document.querySelector('.btn-buy');
             
-            tg.showPopup({
-                title: 'Pagamento LTC',
-                message: 'Invia 2.00€ in LTC a:\n\n' + indirizzoLTC,
-                buttons: [
-                    {id: 'copy', type: 'default', text: 'Copia Indirizzo'},
-                    {id: 'close', type: 'cancel', text: 'Chiudi'}
-                ]
-            }, function(buttonId) {
-                if (buttonId === 'copy') {
-                    const el = document.createElement('textarea');
-                    el.value = indirizzoLTC;
-                    document.body.appendChild(el);
-                    el.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(el);
-                    tg.showAlert("Indirizzo copiato! Procedi al pagamento.");
-                }
-            });
-        }
-
-        // Collega la funzione al tuo pulsante (riga 11 del tuo CSS)
-        document.querySelector('.btn-buy').addEventListener('click', avviaPagamento);
+            if (bottone) {
+                bottone.addEventListener('click', function() {
+                    tg.showPopup({
+                        title: 'Pagamento LTC',
+                        message: 'Invia 2.00€ in LTC a:\n\nLXAnkccgxDBi8m3LtEXGuA8TnPynuceC2Q',
+                        buttons: [
+                            {id: 'copy', type: 'default', text: 'Copia Indirizzo'},
+                            {id: 'close', type: 'cancel', text: 'Chiudi'}
+                        ]
+                    }, function(buttonId) {
+                        if (buttonId === 'copy') {
+                            const el = document.createElement('textarea');
+                            el.value = "LXAnkccgxDBi8m3LtEXGuA8TnPynuceC2Q";
+                            document.body.appendChild(el);
+                            el.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(el);
+                            tg.showAlert("Indirizzo copiato!");
+                        }
+                    });
+                });
+            } else {
+                alert("Errore: Il codice non trova il pulsante .btn-buy");
+            }
+        });
     </script>
 </body>
 </html>
