@@ -1,213 +1,24 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kronno Stock Shop - Pro</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --primary: #00ff41;
-            --bg: #0a0a0a;
-            --card-bg: #1a1a1a;
-            --text: #ffffff;
-            --accent: #ff003c;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-        }
-
-        h1 {
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--primary);
-            font-size: 1.4rem;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .product-card {
-            background-color: var(--card-bg);
-            border: 1px solid #333;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .status-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--primary);
-            color: black;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-
-        .product-icon {
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
-
-        .price {
-            color: var(--primary);
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-
-        .btn-buy {
-            background-color: var(--primary);
-            color: black;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .btn-buy:active { transform: scale(0.95); }
-
-        #status-box {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            background: #111;
-            border: 1px dashed #444;
-            display: none;
-            width: 100%;
-            font-size: 0.85rem;
-            text-align: center;
-        }
-
-        .loading-dots:after {
-            content: ' .';
-            animation: dots 1.5s steps(5, end) infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: ' .'; }
-            40% { content: ' ..'; }
-            60% { content: ' ...'; }
-            80%, 100% { content: ''; }
-        }
+        body { background: #0a0a0a; color: #ff0000; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
+        .btn { background: #ff0000; color: white; border: none; padding: 15px 30px; font-weight: bold; border-radius: 5px; cursor: pointer; width: 100%; margin: 10px 0; box-shadow: 0 0 15px #ff0000; }
+        .card { border: 1px solid #333; padding: 15px; border-radius: 10px; background: #111; margin-bottom: 20px; }
     </style>
 </head>
 <body>
-
-    <h1>⚡ KRONNO STOCK SHOP ⚡</h1>
-
-    <div class="container">
-        <div class="product-card">
-            <div class="status-badge">LIVE</div>
-            <div class="product-icon">👤</div>
-            <h2>Account PVA</h2>
-            <p style="color: #aaa; font-size: 0.9rem;">Verificati con numero reale<br>Consegna automatica</p>
-            <div class="price">2.00€ (LTC)</div>
-            <button class="btn-buy" id="payButton" onclick="avviaFlusso()">ACQUISTA ORA</button>
-        </div>
-
-        <div id="status-box">
-            <span style="color: var(--primary)">SISTEMA DI MONITORAGGIO ATTIVO</span><br>
-            <span class="loading-dots">In attesa del pagamento sulla blockchain</span>
-        </div>
+    <h2 style="text-shadow: 0 0 10px #ff0000;">REDMAGIC VOIP HUB</h2>
+    <div class="card">
+        <p>TELEGRAM ITALY 🇮🇹</p>
+        <p>Prezzo: 0.05 LTC</p>
+        <button class="btn" onclick="buy('tg_it')">ACQUISTA ORA</button>
     </div>
-
     <script>
-        const tg = window.Telegram.WebApp;
+        let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.ready();
-
-        const MIO_WALLET = "LXAnkccgxDBi8m3LtEXGuA8TnPynuceC2Q";
-        let checkInterval;
-
-        function avviaFlusso() {
-            tg.showPopup({
-                title: 'Pagamento Litecoin',
-                message: '1. Invia 2.00€ in LTC a:\n' + MIO_WALLET + '\n\n2. Una volta inviato, attendi in questa pagina. Il sistema rileverà la transazione automaticamente.',
-                buttons: [
-                    {id: 'copy', type: 'default', text: 'Copia Indirizzo'},
-                    {id: 'done', type: 'default', text: 'Ho già inviato'},
-                    {id: 'cancel', type: 'cancel', text: 'Annulla'}
-                ]
-            }, function(buttonId) {
-                if (buttonId === 'copy') {
-                    copiaTesto(MIO_WALLET);
-                    iniziaMonitoraggio();
-                } else if (buttonId === 'done') {
-                    iniziaMonitoraggio();
-                }
-            });
-        }
-
-        function copiaTesto(testo) {
-            const el = document.createElement('textarea');
-            el.value = testo;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            tg.showAlert("Indirizzo copiato! Procedi al pagamento.");
-        }
-
-        function iniziaMonitoraggio() {
-            document.getElementById('payButton').disabled = true;
-            document.getElementById('payButton').innerText = "MONITORAGGIO...";
-            document.getElementById('status-box').style.display = 'block';
-
-            // Controllo ogni 20 secondi tramite API pubblica BlockCypher (non serve KEY)
-            checkInterval = setInterval(async () => {
-                try {
-                    const response = await fetch(`https://api.blockcypher.com/v1/ltc/main/addrs/${MIO_WALLET}/full?limit=1`);
-                    const data = await response.json();
-                    
-                    // Controlliamo se c'è una transazione non confermata (unconfirmed) in arrivo
-                    if (data.unconfirmed_txrefs && data.unconfirmed_txrefs.length > 0) {
-                        clearInterval(checkInterval);
-                        successo();
-                    }
-                } catch (e) {
-                    console.error("Errore API:", e);
-                }
-            }, 20000);
-        }
-
-        function successo() {
-            tg.showAlert("✅ PAGAMENTO RILEVATO! Sto inviando i dati al bot per la consegna...");
-            
-            // Invia il segnale al bot Python
-            tg.sendData(JSON.stringify({
-                event: "pva_paid",
-                amount: "2.00",
-                wallet: MIO_WALLET
-            }));
-            
-            // Chiude la Mini App dopo 2 secondi
-            setTimeout(() => { tg.close(); }, 2000);
-        }
+        function buy(prod) { tg.sendData(prod); tg.close(); }
     </script>
 </body>
 </html>
