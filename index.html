@@ -1,24 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #0a0a0a; color: #ff0000; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
-        .btn { background: #ff0000; color: white; border: none; padding: 15px 30px; font-weight: bold; border-radius: 5px; cursor: pointer; width: 100%; margin: 10px 0; box-shadow: 0 0 15px #ff0000; }
-        .card { border: 1px solid #333; padding: 15px; border-radius: 10px; background: #111; margin-bottom: 20px; }
+        :root { --red: #ff0000; --dark: #050505; --grey: #1a1a1a; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .header { border-bottom: 2px solid var(--red); padding-bottom: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(255,0,0,0.2); }
+        .container { display: grid; gap: 15px; }
+        .card { background: var(--grey); border-radius: 12px; padding: 15px; border: 1px solid #333; transition: 0.3s; }
+        .card:active { transform: scale(0.98); border-color: var(--red); }
+        .icon { width: 50px; height: 50px; margin-bottom: 10px; }
+        .price { color: var(--red); font-weight: bold; font-size: 1.2em; }
+        .btn { background: var(--red); color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; text-transform: uppercase; margin-top: 10px; box-shadow: 0 0 10px rgba(255,0,0,0.4); }
     </style>
 </head>
 <body>
-    <h2 style="text-shadow: 0 0 10px #ff0000;">REDMAGIC VOIP HUB</h2>
-    <div class="card">
-        <p>TELEGRAM ITALY 🇮🇹</p>
-        <p>Prezzo: 0.05 LTC</p>
-        <button class="btn" onclick="buy('tg_it')">ACQUISTA ORA</button>
+    <div class="header">
+        <h2 style="margin:0; letter-spacing: 2px;">REDMAGIC HUB</h2>
     </div>
+
+    <div class="container">
+        <div class="card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="icon">
+            <div style="font-weight: bold;">TELEGRAM ITALY 🇮🇹</div>
+            <div class="price">0.05 LTC</div>
+            <button class="btn" onclick="sendOrder('tg_it')">Acquista Ora</button>
+        </div>
+
+        <div class="card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="icon">
+            <div style="font-weight: bold;">WHATSAPP ITALY 🇮🇹</div>
+            <div class="price">0.06 LTC</div>
+            <button class="btn" onclick="sendOrder('wa_it')">Acquista Ora</button>
+        </div>
+    </div>
+
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        function buy(prod) { tg.sendData(prod); tg.close(); }
+        tg.MainButton.hide();
+
+        function sendOrder(service) {
+            // Mandiamo il dato al bot e chiudiamo con feedback
+            tg.sendData(service);
+            tg.close();
+        }
     </script>
 </body>
 </html>
